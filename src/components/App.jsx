@@ -6,16 +6,17 @@ import { Section } from './Section/Section';
 import { useState, useEffect } from 'react';
 import { useMemo } from 'react';
 
-export const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+function getContactsInLocalStorage() {
+  const contacts = localStorage.getItem('contacts');
+  if (contacts) {
+    return JSON.parse(contacts);
+  }
+  return [];
+}
 
-  useEffect(() => {
-    const contacts = localStorage.getItem('contacts');
-    if (contacts) {
-      setContacts(JSON.parse(contacts));
-    }
-  }, []);
+export const App = () => {
+  const [contacts, setContacts] = useState(getContactsInLocalStorage());
+  const [filter, setFilter] = useState('');
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
